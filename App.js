@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Button, Alert ,TouchableWithoutFeedback , TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Button, Alert, Image ,TouchableWithoutFeedback , TouchableOpacity, ScrollView } from 'react-native';
 
 import React, {useEffect, useState} from 'react';
 import Task from './components/Task';
@@ -65,7 +65,14 @@ export default function App() {
   return(
     <View style={styles.container}>
       <View style={styles.body}>
-        <Text style={styles.header}>Todo List</Text>
+      <Text style={styles.header}>Todo List</Text>
+        <View style={styles.iconGr}>
+          <TouchableOpacity style={styles.BtnDelete}>
+            <Image style={styles.iconDeleteAll} source={require('./components/icon/trash-icon.png')}/>
+            <Text style={styles.textIcon}>DeleteAll</Text>
+          </TouchableOpacity>
+        </View>
+          
         <ScrollView style={styles.items}>
           {
             taskList.map((item, index) =>{

@@ -18,9 +18,30 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: color.primary,
         fontStyle:'italic',
+        alignItems:'center',
+        justifyContent:'center',
       },
       items: {
         marginTop: 25,
+      },
+      iconGr:{
+        alignItems: 'flex-end',
+        paddingBottomd: 4,
+      },
+      BtnDelete:{
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+      textIcon:{
+        fontSize: 10,
+        fontWeight: 'bold',
+        color: color.primary,
+      }
+      ,
+      iconDeleteAll:{
+        width: 26,
+        height: 26,
+        tintColor: color.primary
       },
 })
 export default styles
