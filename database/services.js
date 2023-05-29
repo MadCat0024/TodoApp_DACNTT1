@@ -4,6 +4,7 @@ import Realm from "realm";
 
 import {databaseOptions} from './allSchema'
 import { TodoListSchema } from "./tables";
+import { TODOLIST_SCHEMA } from "./name";
 
 export const getAll = (nameTable) => new Promise((resolve, reject) => {
     Realm.open(databaseOptions).then((realm) => {
@@ -29,7 +30,7 @@ export const insert = (nameTable,obj) => new Promise((resolve, reject) => {
 export const deleteTask = (nameTable,id) => new Promise((resolve, reject) => {
     Realm.open(databaseOptions).then((realm)=>{
         realm.write(()=>{
-            let deleteById = realm.objectForPrimaryKey(nameTable, id);
+            let deleteById = realm.objects(nameTable).filtered(`id = '${id}'`);
             realm.delete(deleteById);
             resolve(1);
         })
@@ -38,6 +39,18 @@ export const deleteTask = (nameTable,id) => new Promise((resolve, reject) => {
     })
 })
 
+
+export const deleteAllTask = () => new Promise((resolve, reject) => {
+    Realm.open(databaseOptions).then((realm)=>{
+        realm.write(()=>{
+            let deleteAll = realm.objects(TODOLIST_SCHEMA);
+            realm.delete(deleteAll);
+            resolve(1);
+        })
+    }).catch((e)=>{
+        reject(0);
+    })
+})
 // export const queryAllTodoList = ()=> new Promise((resolve, reject) => {
 //     Realm.open(databaseOptions).then((realm) => {
 //         let allTodoList = realm.objects(TodoListSchema);
