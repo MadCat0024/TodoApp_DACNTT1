@@ -10,6 +10,7 @@ const Task = (props) => {
   return (
     <TouchableOpacity
       onPress={props.onDeleteTask}
+      onLongPress={props.onUpdateTask}
     >
         <View style={styles.item}>
             <View style={[styles.checkBox, itemColor]}>

@@ -61,3 +61,18 @@ export const deleteAllTask = () => new Promise((resolve, reject) => {
 //     })
 // })
 
+//update content
+export const update = (nameTable, obj) => new Promise((resolve, reject) => {
+    Realm.open(databaseOptions).then((realm)=>{
+        realm.write(()=>{
+            let deleteById = realm.objects(nameTable).filtered(`id = '${obj.id}'`)
+            console.log(deleteById,'deleteById')
+            if(deleteById[0]) {
+                deleteById[0].content = obj.content
+            }
+            resolve(1);
+        })
+    }).catch( e=>{
+        reject(0)
+    })
+})

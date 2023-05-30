@@ -1,16 +1,18 @@
-import { StyleSheet, Text, View, Button, Alert, Image ,TouchableWithoutFeedback , TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Button, Alert, TextInput, Image ,TouchableWithoutFeedback, KeyboardAvoidingView , TouchableOpacity, ScrollView, Modal, Pressable } from 'react-native';
 
 import React, {useEffect, useState} from 'react';
 import Task from './components/Task';
 import styles from './appComponents.Styles';
 import Form from './components/Form';
-import { deleteTask, getAll, insert, queryAllTodoList,deleteAllTask, GetAllId} from './database/services'
-import { TODOLIST_SCHEMA} from './database/name'
+import { deleteTask, getAll, insert, queryAllTodoList,deleteAllTask, GetAllId, update} from './database/services.js'
+import { TODOLIST_SCHEMA} from './database/name';
 import { TodoListSchema } from './database/tables';
-import { Object } from 'realm';
-//import { updateTodoList, deleteTodoList, queryAllTodoList, insertNewTodoList } from './database/allSchema'
+
 export default function App() {
-  const [taskList, settaskList] = useState([])
+  const [taskList, settaskList] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [text, setText] = useState('');
+  const [id, setId] = useState(null);
   //console.log(taskList,'taskList')
   useEffect(() => {
     handleAddTask()
@@ -86,6 +88,31 @@ export default function App() {
     }
   }
   //Update task
+  const handleUpdate = (item) => {
+    setText(item.content)
+    setId(item.id)
+    setModalVisible(true)
+  }
+  const handleUpdateTask = async() => {
+    try {
+      if(id === null) {
+        return Alert.alert('Thông báo', 'Update không thành công')
+      }
+      let rs = await update(TODOLIST_SCHEMA,{id: id, content: text})
+      //console.log(rs,'rssss')
+      if(rs === 1) {
+        await handleAddTask()
+        setId(null)
+        setText('')
+        setModalVisible(false)
+      } else {
+        return Alert.alert('Thông báo', 'Update không thành công')
+      }
+      } catch (error) {
+    //console.log(error,'error+')
+    return Alert.alert('Thông báo', 'Update không thành công')
+  }
+    }
   // sort task list
   
   return(
@@ -93,40 +120,82 @@ export default function App() {
       <View style={styles.body}>
       <Text style={styles.header}>Todo List</Text>
 
-        <View style={styles.iconGr}>
-          <TouchableOpacity onPress={handleDeleteAll} style={styles.BtnDelete}>
-            <Image style={styles.iconDeleteAll} source={require('./components/icon/trash-icon.png')}/>
-            <Text style={styles.textIcon}>DeleteAll</Text>
-          </TouchableOpacity>
+      <View style={styles.iconGr}>
+        <TouchableOpacity onPress={handleDeleteAll} style={styles.BtnDelete}>
+          <Image style={styles.iconDeleteAll} source={require('./components/icon/trash-icon.png')}/>
+          <Text style={styles.textIcon}>DeleteAll</Text>
+        </TouchableOpacity>
 
-          <TouchableOpacity  style={styles.BtnDelete}>
-            <Image style={styles.iconDeleteAll} source={require('./components/icon/sort.png')}/>
-            <Text style={styles.textIcon}>Sort</Text>
-          </TouchableOpacity>
+        <TouchableOpacity  style={styles.BtnDelete}>
+          <Image style={styles.iconDeleteAll} source={require('./components/icon/sort.png')}/>
+          <Text style={styles.textIcon}>Sort</Text>
+        </TouchableOpacity>
 
-          <TouchableOpacity style={styles.BtnDelete}>
-            <Image style={styles.iconDeleteAll} source={require('./components/icon/help.png')}/>
-            <Text style={styles.textIcon}>Guide</Text>
-          </TouchableOpacity>
-        </View>
-          
-        <ScrollView style={styles.items}>
-          {
-            taskList.map((item, index) =>{
-              return <Task
-                key={index}
-                title={item.content}
-                number={index}
-                onDeleteTask={() => handleDeleteTask(item)}
-                onUpdateTask={() => handleUpdate(item)}
-                onDeleteAllTask={() => handleDeleteAll()}
-                
-              />
-              //return <Task key = {index} title={item.content} number={index} onDeleteTask={() => handleDeleteTask(index)}/>
-            })
-          }
-        </ScrollView>
+        <TouchableOpacity style={styles.BtnDelete}>
+          <Image style={styles.iconDeleteAll} source={require('./components/icon/help.png')}/>
+          <Text style={styles.textIcon}>Guide</Text>
+        </TouchableOpacity>
+      </View>
+        
+      <ScrollView style={styles.items}>
+        {
+          taskList.map((item, index) =>{
+            return <Task
+              key={index}
+              title={item.content}
+              number={index}
+              onDeleteTask={() => handleDeleteTask(item)}
+              onUpdateTask={() => handleUpdate(item)}
+              onDeleteAllTask={() => handleDeleteAll()}
+              
+            />
+            //return <Task key = {index} title={item.content} number={index} onDeleteTask={() => handleDeleteTask(index)}/>
+          })
+        }
+      <View style={styles.items}></View>
+      <View style={styles.items}></View>
+      </ScrollView>
+      {/* modal */}
+      
+      <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+            setModalVisible(!modalVisible);
+          }}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+                  <KeyboardAvoidingView style={styles.addTask}
+                    behavior={Platform.OS === "ios" ? "padding" : "height"}
+                    keyboardVerticalOffset={10}>
+                    <TextInput
+                      value={text}
+                      placeholder='input your task'
+                      style={styles.input}
+                      onChangeText={(str) => setText(str)}
+                    />
+                    <TouchableOpacity
+                      onPress={() => handleUpdateTask()} >
+                      <View style={styles.iconCircle}>
+                        <Text style={styles.icon}>+</Text>
+                      </View>
+                    </TouchableOpacity>
 
+                  </KeyboardAvoidingView>
+                  <Pressable
+                    style={[styles.button, styles.buttonClose]}
+                    onPress={() => setModalVisible(!modalVisible)}>
+                    <Text style={styles.textStyle}>Hủy</Text>
+                  </Pressable>
+            </View>
+          </View>
+              
+            
+        </Modal>       
+
+      {/* modal */}
       </View>
       <View style={styles.textInput}></View>
       <Form onAddTask={handleAddTask} />
