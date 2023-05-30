@@ -60,12 +60,4 @@ export const deleteAllTask = () => new Promise((resolve, reject) => {
 //         reject(0)
 //     })
 // })
-export const getId = ()=>new Promise((resolve, reject) => {
-    Realm.open(databaseOptions).then((realm)=>{
-        let all = realm.objects(TodoListSchema);
-        let id = all.id;
-        resolve(id)
-    }).catch(e =>{
-        reject(1)
-    })
-})
+

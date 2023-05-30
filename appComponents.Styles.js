@@ -25,12 +25,14 @@ const styles = StyleSheet.create({
         marginTop: 25,
       },
       iconGr:{
+        flexDirection: 'row-reverse',
         alignItems: 'flex-end',
         paddingBottomd: 4,
       },
       BtnDelete:{
         alignItems: 'center',
         justifyContent: 'center',
+        paddingHorizontal: 8,
       },
       textIcon:{
         fontSize: 10,

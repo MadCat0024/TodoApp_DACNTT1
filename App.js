@@ -4,9 +4,10 @@ import React, {useEffect, useState} from 'react';
 import Task from './components/Task';
 import styles from './appComponents.Styles';
 import Form from './components/Form';
-import { deleteTask, getAll, insert, queryAllTodoList,deleteAllTask} from './database/services'
+import { deleteTask, getAll, insert, queryAllTodoList,deleteAllTask, GetAllId} from './database/services'
 import { TODOLIST_SCHEMA} from './database/name'
 import { TodoListSchema } from './database/tables';
+import { Object } from 'realm';
 //import { updateTodoList, deleteTodoList, queryAllTodoList, insertNewTodoList } from './database/allSchema'
 export default function App() {
   const [taskList, settaskList] = useState([])
@@ -83,11 +84,10 @@ export default function App() {
     } catch (error) {
       console.log(error);
     }
-    //Update task
-    // sort task list
-    
-
   }
+  //Update task
+  // sort task list
+  
   return(
     <View style={styles.container}>
       <View style={styles.body}>
@@ -97,6 +97,16 @@ export default function App() {
           <TouchableOpacity onPress={handleDeleteAll} style={styles.BtnDelete}>
             <Image style={styles.iconDeleteAll} source={require('./components/icon/trash-icon.png')}/>
             <Text style={styles.textIcon}>DeleteAll</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity  style={styles.BtnDelete}>
+            <Image style={styles.iconDeleteAll} source={require('./components/icon/sort.png')}/>
+            <Text style={styles.textIcon}>Sort</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.BtnDelete}>
+            <Image style={styles.iconDeleteAll} source={require('./components/icon/help.png')}/>
+            <Text style={styles.textIcon}>Guide</Text>
           </TouchableOpacity>
         </View>
           

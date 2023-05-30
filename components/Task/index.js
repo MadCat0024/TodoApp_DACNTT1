@@ -6,7 +6,7 @@ import styles from './style';
 const Task = (props) => {
   const {number} = props;
   const numberText = number < 10 ? `0${number}` : `${number}`;
-  const itemColor = number % 2 === 0 ? styles.even : styles.odd;
+  const itemColor = number % 2 === 0 ? styles.even : styles.odd; 
   return (
     <TouchableOpacity
       onPress={props.onDeleteTask}
