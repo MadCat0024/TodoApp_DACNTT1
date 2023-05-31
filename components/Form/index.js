@@ -4,6 +4,7 @@ import styles from './style';
 //import { updateTodoList, deleteTodoList, queryAllTodoList, insertNewTodoList } from "./../../database/allSchema"
 import { getAll, insert} from '../../database/services'
 import { TODOLIST_SCHEMA} from '../../database/name'
+import color from '../../contains/color';
 const Form = (props) => {
   const [task, setTask] = useState('')
   const handleAddTask = async() => {
@@ -41,7 +42,7 @@ const Form = (props) => {
       value={task}
       onChangeText={(text) => setTask(text)}
       placeholder='input your task' 
-      style={styles.input} 
+      style={[styles.input, props.darkMode && {backgroundColor: color.darkTask}]} 
       />     
       <TouchableOpacity   
       onPress={()=>handleAddTask()} >

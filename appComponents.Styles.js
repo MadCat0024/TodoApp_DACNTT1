@@ -2,13 +2,13 @@ import { StyleSheet } from "react-native";
 import color from './contains/color';
 const styles = StyleSheet.create({
     container:{
-        backgroundColor: '#F5F5F5',
+        backgroundColor: color.background,
         flex: 1,
       },
       body:{
         flex:1,
         paddingTop: 30,
-        paddingHorizontal: 20,
+        
       },
       textInput:{
         
@@ -20,9 +20,17 @@ const styles = StyleSheet.create({
         fontStyle:'italic',
         alignItems:'center',
         justifyContent:'center',
+        paddingLeft: 16,
       },
       items: {
         marginTop: 25,
+        marginHorizontal: 1,
+        backgroundColor: color.white,
+        paddingHorizontal: 20,
+        borderRadius: 20,
+        paddingVertical: 16,
+        borderColor: color.primary,
+        borderWidth: 2,
       },
       iconGr:{
         flexDirection: 'row-reverse',
@@ -56,7 +64,7 @@ const styles = StyleSheet.create({
         borderColor: color.primary,
         borderWidth: 2,
         margin: 10,
-        backgroundColor: 'white',
+        backgroundColor: color.white,
         borderRadius: 16,
         padding: 10,
         paddingTop: 60,
@@ -74,6 +82,7 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         padding: 4,
         paddingHorizontal: 16,
+        // do bong
         elevation: 2,
       },
       buttonOpen: {
@@ -107,6 +116,7 @@ const styles = StyleSheet.create({
       borderColor: color.primary,
       paddingHorizontal: 20,
       paddingVertical: 10,
+      marginRight: 8
     },
     iconCircle: {
       width: 44,
@@ -127,6 +137,9 @@ const styles = StyleSheet.create({
       fontWeight: 'bold',
       color: color.text,
       fontSize: 15,
+    },
+    placeholder:{
+      paddingVertical:50
     }
 })
 export default styles

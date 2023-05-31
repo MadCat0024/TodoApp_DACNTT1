@@ -1,31 +1,42 @@
-import { StyleSheet, Text, View, Button, Alert, TextInput, Image ,TouchableWithoutFeedback, KeyboardAvoidingView , TouchableOpacity, ScrollView, Modal, Pressable } from 'react-native';
+import { StyleSheet, Text, View, Button, Alert, TextInput, Image, TouchableWithoutFeedback, KeyboardAvoidingView, TouchableOpacity, ScrollView, Modal, Pressable } from 'react-native';
 
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import Task from './components/Task';
 import styles from './appComponents.Styles';
 import Form from './components/Form';
-import { deleteTask, getAll, insert, queryAllTodoList,deleteAllTask, GetAllId, update} from './database/services.js'
-import { TODOLIST_SCHEMA} from './database/name';
+import { deleteTask, getAll, insert, queryAllTodoList, deleteAllTask, GetAllId, update } from './database/services.js'
+import { TODOLIST_SCHEMA } from './database/name';
 import { TodoListSchema } from './database/tables';
+import color from './contains/color';
 
 export default function App() {
   const [taskList, settaskList] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [text, setText] = useState('');
   const [id, setId] = useState(null);
+  const [inscrease, setIncrease] = useState(true)
+  const [darkMode, setDarkMode] = useState(false)
   //console.log(taskList,'taskList')
   useEffect(() => {
     handleAddTask()
-  },[])
-  const handleAddTask = async(task) => {
+  }, [inscrease])
+  const handleAddTask = async () => {
     try {
-      let list = await getAll(TODOLIST_SCHEMA)
-      // console.log(list)
-      settaskList(list)
+      let lists = await getAll(TODOLIST_SCHEMA)
+      
+      let sort = [...lists]
+      if (inscrease){
+        sort?.sort((a, b) => Number(a.id) - Number(b.id))
+        //console.log(inscrease)
+      }else{
+        sort?.sort((a, b) => Number(b.id) - Number(a.id))
+      }
+      settaskList(sort)
+
     } catch (error) {
       console.log(error)
     }
-    
+
   }
   // delete Task
   const handleDeleteTask = async (item) => {
@@ -61,7 +72,7 @@ export default function App() {
     }
   }
   //delete all task
-  const handleDeleteAll = async()=>{
+  const handleDeleteAll = async () => {
     try {
       Alert.alert('Delete All Task', 'Bạn muốn xóa hết các việc cần làm?', [
         {
@@ -69,7 +80,7 @@ export default function App() {
           onPress: () => {
             deleteAllTask().then((rs) => {
               if (rs === 1) {
-                return Alert.alert('Thông báo', 'Xoá thành công', [{ text: 'OK', onPress: () => handleAddTask()}])
+                return Alert.alert('Thông báo', 'Xoá thành công', [{ text: 'OK', onPress: () => handleAddTask() }])
               } else {
                 return Alert.alert('Thông báo', 'Xoá không thành công')
               }
@@ -77,10 +88,10 @@ export default function App() {
               console.log(error)
               return Alert.alert('Thông báo', 'Xoá không thành công')
             })
-        }
-      }, 
+          }
+        },
         {
-          text: 'Không', onPress: () => { } 
+          text: 'Không', onPress: () => { }
         },
       ]);
     } catch (error) {
@@ -93,14 +104,14 @@ export default function App() {
     setId(item.id)
     setModalVisible(true)
   }
-  const handleUpdateTask = async() => {
+  const handleUpdateTask = async () => {
     try {
-      if(id === null) {
+      if (id === null) {
         return Alert.alert('Thông báo', 'Update không thành công')
       }
-      let rs = await update(TODOLIST_SCHEMA,{id: id, content: text})
+      let rs = await update(TODOLIST_SCHEMA, { id: id, content: text })
       //console.log(rs,'rssss')
-      if(rs === 1) {
+      if (rs === 1) {
         await handleAddTask()
         setId(null)
         setText('')
@@ -108,56 +119,69 @@ export default function App() {
       } else {
         return Alert.alert('Thông báo', 'Update không thành công')
       }
-      } catch (error) {
-    //console.log(error,'error+')
-    return Alert.alert('Thông báo', 'Update không thành công')
-  }
+    } catch (error) {
+      //console.log(error,'error+')
+      return Alert.alert('Thông báo', 'Update không thành công')
     }
+  }
   // sort task list
-  
-  return(
-    <View style={styles.container}>
+  const handleSortById = () => {
+    setIncrease(!inscrease)
+  }
+  const changeMode = () => {
+    setDarkMode(!darkMode)
+  }
+  return (
+    <View style={[styles.container, darkMode && {backgroundColor: color.darkBackground}]}>
       <View style={styles.body}>
-      <Text style={styles.header}>Todo List</Text>
+        <Text style={styles.header}>Todo List</Text>
 
-      <View style={styles.iconGr}>
-        <TouchableOpacity onPress={handleDeleteAll} style={styles.BtnDelete}>
-          <Image style={styles.iconDeleteAll} source={require('./components/icon/trash-icon.png')}/>
-          <Text style={styles.textIcon}>DeleteAll</Text>
-        </TouchableOpacity>
+        <View style={styles.iconGr}>
+          <TouchableOpacity onPress={handleDeleteAll} style={styles.BtnDelete}>
+            <Image style={styles.iconDeleteAll} source={require('./components/icon/trash-icon.png')} />
+            <Text style={styles.textIcon}>DeleteAll</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity  style={styles.BtnDelete}>
-          <Image style={styles.iconDeleteAll} source={require('./components/icon/sort.png')}/>
-          <Text style={styles.textIcon}>Sort</Text>
-        </TouchableOpacity>
+          <TouchableOpacity onPress={handleSortById} style={styles.BtnDelete}>
+            <Image style={styles.iconDeleteAll} source={require('./components/icon/sort.png')} />
+            <Text style={styles.textIcon}>Sort</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity style={styles.BtnDelete}>
-          <Image style={styles.iconDeleteAll} source={require('./components/icon/help.png')}/>
-          <Text style={styles.textIcon}>Guide</Text>
-        </TouchableOpacity>
-      </View>
+          <TouchableOpacity onPress={changeMode} style={styles.BtnDelete}>
+            <Image style={styles.iconDeleteAll} source={require('./components/icon/sun.png')} />
+            <Text style={styles.textIcon}>Dark/Light</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.BtnDelete}>
+            <Image style={styles.iconDeleteAll} source={require('./components/icon/help.png')} />
+            <Text style={styles.textIcon}>Guide</Text>
+          </TouchableOpacity>
+        </View>
+
+          <ScrollView style={[styles.items,  darkMode && {backgroundColor: color.darkGr}]}>
+            {
+              taskList.map((item, index) => {
+                return <Task
+                  darkMode={darkMode}
+                  key={index}
+                  title={item.content}
+                  date = {item.created_on}
+                  number={index}
+                  onDeleteTask={() => handleDeleteTask(item)}
+                  onUpdateTask={() => handleUpdate(item)}
+                  onDeleteAllTask={() => handleDeleteAll()}
+
+                />
+                //return <Task key = {index} title={item.content} number={index} onDeleteTask={() => handleDeleteTask(index)}/>
+              })
+            }
+            <View style={styles.placeholder}></View>
+            
+          </ScrollView>
         
-      <ScrollView style={styles.items}>
-        {
-          taskList.map((item, index) =>{
-            return <Task
-              key={index}
-              title={item.content}
-              number={index}
-              onDeleteTask={() => handleDeleteTask(item)}
-              onUpdateTask={() => handleUpdate(item)}
-              onDeleteAllTask={() => handleDeleteAll()}
-              
-            />
-            //return <Task key = {index} title={item.content} number={index} onDeleteTask={() => handleDeleteTask(index)}/>
-          })
-        }
-      <View style={styles.items}></View>
-      <View style={styles.items}></View>
-      </ScrollView>
-      {/* modal */}
-      
-      <Modal
+        {/* modal */}
+
+        <Modal
           animationType="slide"
           transparent={true}
           visible={modalVisible}
@@ -166,39 +190,39 @@ export default function App() {
             setModalVisible(!modalVisible);
           }}>
           <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-                  <KeyboardAvoidingView style={styles.addTask}
-                    behavior={Platform.OS === "ios" ? "padding" : "height"}
-                    keyboardVerticalOffset={10}>
-                    <TextInput
-                      value={text}
-                      placeholder='input your task'
-                      style={styles.input}
-                      onChangeText={(str) => setText(str)}
-                    />
-                    <TouchableOpacity
-                      onPress={() => handleUpdateTask()} >
-                      <View style={styles.iconCircle}>
-                        <Text style={styles.icon}>+</Text>
-                      </View>
-                    </TouchableOpacity>
+            <View style={[styles.modalView, darkMode && {backgroundColor: color.darkBackground}]}>
+              <KeyboardAvoidingView style={styles.addTask}
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
+                keyboardVerticalOffset={10}>
+                <TextInput
+                  value={text}
+                  placeholder='input your task'
+                  style={[styles.input ,darkMode && {backgroundColor: color.darkTask}]}
+                  onChangeText={(str) => setText(str)}
+                />
+                <TouchableOpacity
+                  onPress={() => handleUpdateTask()} >
+                  <View style={styles.iconCircle}>
+                    <Text style={styles.icon}>+</Text>
+                  </View>
+                </TouchableOpacity>
 
-                  </KeyboardAvoidingView>
-                  <Pressable
-                    style={[styles.button, styles.buttonClose]}
-                    onPress={() => setModalVisible(!modalVisible)}>
-                    <Text style={styles.textStyle}>Hủy</Text>
-                  </Pressable>
+              </KeyboardAvoidingView>
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setModalVisible(!modalVisible)}>
+                <Text style={styles.textStyle}>Hủy</Text>
+              </Pressable>
             </View>
           </View>
-              
-            
-        </Modal>       
 
-      {/* modal */}
+
+        </Modal>
+
+        {/* modal */}
       </View>
       <View style={styles.textInput}></View>
-      <Form onAddTask={handleAddTask} />
+      <Form darkMode={darkMode} onAddTask={handleAddTask} />
     </View>
   )
 }
@@ -210,6 +234,6 @@ export default function App() {
 //       <Text>App</Text>
 //     </View>
 //   )
-// }  
+// }
 
 // export default App

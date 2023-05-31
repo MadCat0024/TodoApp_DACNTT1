@@ -3,7 +3,7 @@ import color from './../../contains/color';
 const styles = StyleSheet.create({
     item:{
         flexDirection:'row',
-        backgroundColor: color.white,
+        backgroundColor: color.task,
         marginBottom: 15,
         paddingHorizontal: 10,
         paddingVertical: 10,
@@ -33,7 +33,21 @@ const styles = StyleSheet.create({
         width: '80%',
         fontSize: 16,
         fontWeight: 600,
+        
       },
+      date:{
+        fontSize: 8,
+        fontWeight: 600,
+        marginLeft: 16,
+        color: color.white
+      },
+      itemFull:{
+        backgroundColor: color.taskContent,
+        borderRadius: 10,
+        marginBottom: 16,
+        elevation: 5,
+        height: 70,
+      }
 })
 
 export default styles;
