@@ -1,9 +1,9 @@
 export default {
     background: '#BBEFEF',
-    primary:'#4fd0ee',
+    primary:'#4997D0',
     white: '#fff',
     text: 'black',
-    green: '#55f253',
+    green: '#03C03C',
     task: '#A9E0E0',
     taskContent: '#305256',
     darkBackground: '#0D1E2E',

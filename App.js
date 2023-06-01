@@ -12,6 +12,7 @@ import color from './contains/color';
 export default function App() {
   const [taskList, settaskList] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const [GuideVisible, setGuideVisible] = useState(false);
   const [text, setText] = useState('');
   const [id, setId] = useState(null);
   const [inscrease, setIncrease] = useState(true)
@@ -128,8 +129,21 @@ export default function App() {
   const handleSortById = () => {
     setIncrease(!inscrease)
   }
+  //sort Icon
+  var sortIcon = inscrease === false ? 
+  require('./components/icon/sortDown.png') :
+  require('./components/icon/sortUp.png') ;
+//change darkmode
   const changeMode = () => {
     setDarkMode(!darkMode)
+  }
+  // darkmode Icon
+  var changeModeIcon = darkMode === false ? 
+  require('./components/icon/sun.png') :
+  require('./components/icon/moon.png') ;
+
+  const BtnGuide = ()=>{
+    setGuideVisible(!GuideVisible)
   }
   return (
     <View style={[styles.container, darkMode && {backgroundColor: color.darkBackground}]}>
@@ -143,16 +157,16 @@ export default function App() {
           </TouchableOpacity>
 
           <TouchableOpacity onPress={handleSortById} style={styles.BtnDelete}>
-            <Image style={styles.iconDeleteAll} source={require('./components/icon/sort.png')} />
+            <Image style={styles.iconDeleteAll} source={sortIcon} />
             <Text style={styles.textIcon}>Sort</Text>
           </TouchableOpacity>
 
           <TouchableOpacity onPress={changeMode} style={styles.BtnDelete}>
-            <Image style={styles.iconDeleteAll} source={require('./components/icon/sun.png')} />
+            <Image style={styles.iconDeleteAll} source={changeModeIcon} />
             <Text style={styles.textIcon}>Dark/Light</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.BtnDelete}>
+          <TouchableOpacity onPress={BtnGuide} style={styles.BtnDelete}>
             <Image style={styles.iconDeleteAll} source={require('./components/icon/help.png')} />
             <Text style={styles.textIcon}>Guide</Text>
           </TouchableOpacity>
@@ -179,7 +193,7 @@ export default function App() {
             
           </ScrollView>
         
-        {/* modal */}
+        {/* modal update*/}
 
         <Modal
           animationType="slide"
@@ -202,8 +216,8 @@ export default function App() {
                 />
                 <TouchableOpacity
                   onPress={() => handleUpdateTask()} >
-                  <View style={styles.iconCircle}>
-                    <Text style={styles.icon}>+</Text>
+                  <View style={[styles.iconCircle, darkMode && {borderColor: color.darkTask}]}>
+                    <Text style={[styles.icon, darkMode && {color: color.darkTask}]}>+</Text>
                   </View>
                 </TouchableOpacity>
 
@@ -219,7 +233,38 @@ export default function App() {
 
         </Modal>
 
-        {/* modal */}
+        {/* modal modal update*/}
+
+        {/* Modal guide */}
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={GuideVisible}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+            setGuideVisible(!GuideVisible);
+          }}>
+          <View style={styles.guideView}>
+            <View style={[styles.modalGuide, darkMode && {backgroundColor: color.darkBackground, color: color.white}]}>
+              <View >
+                <Text style={styles.textGuide}>1. Nhập nội dung công việc để lên danh sách</Text>
+                <Text style={styles.textGuide}>2. Nhấn vào công việc đã hoàn thành để xóa</Text>
+                <Text style={styles.textGuide}>3. Nhấn giữ vào công việc mà bạn muốn sửa nội dung</Text>
+                <Text style={styles.textGuide}>4. Nhấn nút Sort để có thể sắp xếp công việc theo 
+                  thứ tự nhập vào giảm/tăng dần</Text>
+                <Text style={styles.textGuide}>5. Nhấn nút Dark/Light để chuyển sao diện Tối hoặc Sáng</Text>
+              </View>
+              <Pressable
+                  style={[styles.button, styles.buttonClose]}
+                  onPress={() => setGuideVisible(!GuideVisible)}>
+                  <Text style={styles.textStyle}>Hủy</Text>
+              </Pressable>
+            </View>
+            
+          </View>
+
+        </Modal>
+        {/* Modal guide */}
       </View>
       <View style={styles.textInput}></View>
       <Form darkMode={darkMode} onAddTask={handleAddTask} />

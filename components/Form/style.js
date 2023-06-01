@@ -7,6 +7,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent:'space-between',
         alignItems: 'center',
+      
     },
     input: {
         height: 44,
@@ -26,7 +27,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderWidth:2,
-        borderColor: '#eff7f8'
+        borderColor: color.white
     },
     icon: {
         fontWeight: 'bold',
@@ -38,6 +39,11 @@ const styles = StyleSheet.create({
         color: color.text,
         fontSize: 15,
     },
+    dropMenu:{
+        width: 10,
+        height: 10,
+        
+    }
 })
 
 export default styles;

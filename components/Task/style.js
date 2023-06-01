@@ -24,6 +24,12 @@ const styles = StyleSheet.create({
       odd:{
         backgroundColor: color.primary,
       },
+      evenD:{
+        backgroundColor: '#3E2F5B'
+      },
+      oddD:{
+        backgroundColor: '000F08'
+      },
       number:{
         fontSize: 16,
         fontWeight: 700,

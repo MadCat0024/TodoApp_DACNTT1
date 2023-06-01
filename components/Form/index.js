@@ -22,7 +22,8 @@ const Form = (props) => {
       }
       await insert(TODOLIST_SCHEMA,obj)
       props.onAddTask(task);
-      setTask('')
+      setTask('');
+      Keyboard.dismiss()
     } catch (error) {
       console.log(error)
     }
@@ -34,23 +35,24 @@ const Form = (props) => {
     // setTask('');
     // Keyboard.dismiss();
   }
+  const status = ["1", "2", "3"]
   return (
     <KeyboardAvoidingView style={styles.addTask}
-    behavior={Platform.OS === "ios" ? "padding" : "height"}
-    keyboardVerticalOffset={10}>
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={10}>
+      
       <TextInput 
       value={task}
       onChangeText={(text) => setTask(text)}
       placeholder='input your task' 
       style={[styles.input, props.darkMode && {backgroundColor: color.darkTask}]} 
-      />     
+      />   
       <TouchableOpacity   
       onPress={()=>handleAddTask()} >
-        <View style={styles.iconCircle}>
-          <Text style={styles.icon}>+</Text>
+        <View style={[styles.iconCircle, props.darkMode && {borderColor: color.darkTask}]}>
+          <Text style={[styles.icon, props.darkMode && {color: color.darkTask}]}>+</Text>
         </View>
       </TouchableOpacity>
-      
     </KeyboardAvoidingView>
   )
 }

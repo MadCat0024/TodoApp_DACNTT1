@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
       borderWidth:2,
-      borderColor: '#eff7f8'
+      borderColor: color.white,
     },
     icon: {
       fontWeight: 'bold',
@@ -140,6 +140,35 @@ const styles = StyleSheet.create({
     },
     placeholder:{
       paddingVertical:50
+    },
+    guideView:{
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: 8,
+    },
+    modalGuide: {
+      borderColor: color.primary,
+      borderWidth: 2,
+      margin: 10,
+      backgroundColor: color.white,
+      borderRadius: 16,
+      padding: 10,
+      paddingTop: 8,
+      alignItems: 'center',
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 4,
+      elevation: 5,
+    },
+    textGuide:{
+      fontSize: 16,
+      fontWeight: 'bold',
+      color: 'gray',
     }
 })
 export default styles
