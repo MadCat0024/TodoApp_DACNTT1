@@ -169,6 +169,6 @@ const styles = StyleSheet.create({
       fontSize: 16,
       fontWeight: 'bold',
       color: 'gray',
-    }
+    },
 })
 export default styles

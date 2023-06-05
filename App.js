@@ -138,7 +138,7 @@ export default function App() {
     setDarkMode(!darkMode)
   }
   // darkmode Icon
-  var changeModeIcon = darkMode === false ? 
+  var changeModeIcon = darkMode === true ? 
   require('./components/icon/sun.png') :
   require('./components/icon/moon.png') ;
 
@@ -186,11 +186,11 @@ export default function App() {
                   onDeleteAllTask={() => handleDeleteAll()}
 
                 />
-                //return <Task key = {index} title={item.content} number={index} onDeleteTask={() => handleDeleteTask(index)}/>
+                //return <Task key = {index} title={item.content} 
+                //number={index} onDeleteTask={() => handleDeleteTask(index)}/>
               })
             }
             <View style={styles.placeholder}></View>
-            
           </ScrollView>
         
         {/* modal update*/}
@@ -211,7 +211,7 @@ export default function App() {
                 <TextInput
                   value={text}
                   placeholder='input your task'
-                  style={[styles.input ,darkMode && {backgroundColor: color.darkTask}]}
+                  style={[styles.input ,darkMode && {backgroundColor: color.darkTask, color: color.white}]}
                   onChangeText={(str) => setText(str)}
                 />
                 <TouchableOpacity

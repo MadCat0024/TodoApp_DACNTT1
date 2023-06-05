@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#3E2F5B'
       },
       oddD:{
-        backgroundColor: '000F08'
+        backgroundColor: color.darkBackground
       },
       number:{
         fontSize: 16,
@@ -53,6 +53,10 @@ const styles = StyleSheet.create({
         marginBottom: 16,
         elevation: 5,
         height: 70,
+      },
+      gridView:{
+        
+        
       }
 })
 

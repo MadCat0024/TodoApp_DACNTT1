@@ -10,10 +10,10 @@ const Task = (props) => {
   const itemColor = number % 2 === 0 ? styles.even : styles.odd; 
   const itemColorDark = number % 2 === 0 ? styles.evenD : styles.oddD;
   return (
-    <TouchableOpacity
-      onPress={props.onDeleteTask}
-      onLongPress={props.onUpdateTask}
-    >
+  <TouchableOpacity
+    onPress={props.onDeleteTask}
+    onLongPress={props.onUpdateTask}
+  >  
     <View style={styles.itemFull}>
       <Text style={styles.date}>{props.date}</Text>
       <View style={[styles.item, props.darkMode && {backgroundColor: color.darkTask}]}>
@@ -22,8 +22,8 @@ const Task = (props) => {
           </View>
           <Text style={[styles.content, props.darkMode && {color: color.white}]}>{props.title}</Text>
       </View>
-    </View>
-    </TouchableOpacity>
+    </View> 
+  </TouchableOpacity>
   )
 }
 export default Task
